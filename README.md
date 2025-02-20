@@ -94,7 +94,7 @@ For academic use, this project is licensed under the MIT License (see the LICENS
 [3] Lee, Yongjae, et al. "Genome-scale determination of 5´ and 3´ boundaries of RNA transcripts in Streptomyces genomes." Scientific Data 7.1 (2020): 436.
 [4] Otani, Hiroshi, Daniel W. Udwary, and Nigel J. Mouncey. "Comparative and pangenomic analysis of the genus Streptomyces." Scientific reports 12.1 (2022): 18909.
 [5] e Silva, Scheila de Avila, Sergio Echeverrigaray, and Günther JL Gerhardt. "BacPP: bacterial promoter prediction—a tool for accurate sigma-factor specific assignment in enterobacteria." Journal of theoretical biology 287 (2011): 92-99.
-[6] Wang H, Du Q, Wang Y, et al. GPro: generative AI-empowered toolkit for promoter design[J]. Bioinformatics, 2024, 40(3): btae123.
+[6] Wang, Haochen, et al. "GPro: generative AI-empowered toolkit for promoter design." Bioinformatics 40.3 (2024): btae123.
 ~~~
 
 
