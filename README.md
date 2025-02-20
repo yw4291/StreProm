@@ -41,7 +41,7 @@ This table shows the discription of input datasets used in this paper:
 
 
 
-## Expand the promoter pool in *Streptomyces*
+# Design novel functional promoter  in *Streptomyces*
 
 StreProm is composed of a number of modules that can be imported as follows:
 
