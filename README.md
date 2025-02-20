@@ -4,7 +4,6 @@
 This repository contains the code for the paper:
 **A scalable deep learning strategy for promoter inverse design in Streptomyces**.
 
-<div style='display: none'> published in **[Journal]**.</div>
 
 # Introduction
 
