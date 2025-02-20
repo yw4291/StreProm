@@ -38,8 +38,8 @@ To deal with the problem that GEO annotated gene start sites are generally not a
 This table shows the discription of input datasets used in this paper:
 | Folder Name | Description| Dataset|
 | ------ | ------ |------ |
-| input_promoter_sequences | Combined the promoter sequences from dRNA-seq[2,3] and GEO database after evaluated by BacPP  | spe6_NAR_primary_TK24_80bp_andGEOAfterBaPP_80bp_norepeatseq.txt 
-| sequence_activity| Sequence-activity paired data |  spe6_all_normalizationexp_train_data_notoohigh_andGEOafterBacPP_80bp_train_norepeat.npy | 
+| input_promoter_sequences | Combined the promoter sequences from dRNA-seq[2,3] and GEO database after evaluated by BacPP  | input_sequences.txt 
+| sequence_activity| Sequence-activity paired data |  sequence_activity_train_norepeat.npy | 
 
 
 
