@@ -10,7 +10,7 @@ This repository contains the code for the paper:
 Streptomyces play a pivotal role in the discovery and production of natural products, making them exceptionally promising for industrial applications. Since Streptomyces originated natural products faced the challenge of insufficient yield, expanding Streptomyces promoter libraries is essential so as to upregulate the expression of endogenously gene clusters. We employed a deep generative framework that captured the characteristics of natural promoters from extensive transcriptome data. Through iterative optimization via machine learning, AI designed 1 billion artificial candidate sequences *in silico*. 
 
 
-![Figure 1](./figs/Figure1.png)
+![Figure 1](./figs/Figure1.png){: style="width:80%;"}
 
 The top 100 candidates of AI-deisnged novel promoters selected by predition model were validated in 4 different Streptomyce species (*Streptomyces* A-14, *S. coelicolor* M1146, *S. albus*, and *Streptomyces* T2-4) over six days. Among these promoters, 92% were validated to be functional, with 7 promoters (Srasp8, Srasp26, Srasp47, Srasp50, Srasp57, Srasp60, Srasp61)  surpassing the promoter activity of the strong promoter *kasO*p*. Moreover, the novel AI-designed promoters exhibited substantial sequence diversity with low similarity to their natural counterparts found in bacterial genomes. 
 
