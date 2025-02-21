@@ -26,7 +26,7 @@ AI-designed promoters were then integrated into the “plug and play” platform
 conda create -n streprom python=3.9
 conda activate streprom
 cd StreProm
-pip install .
+pip install -r requirements.txt
 ```
 
 ## Dataset Preparation
