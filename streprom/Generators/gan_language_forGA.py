@@ -172,7 +172,7 @@ class WGAN_GP:
             print("validation set JSD for n={}: {}".format(i+1, self.true_char_ngram_lms[i].js_with(validation_char_ngram_lms[i])))#language_helpers.
         self.true_char_ngram_lms = [NgramLanguageModel(i+1, self.lines, tokenize=False) for i in range(4)]
 
-        #wy
+        #
         self.graph = tf.Graph()
         config = tf.ConfigProto()
         config.gpu_options.per_process_gpu_memory_fraction = 0.3
@@ -257,14 +257,14 @@ class WGAN_GP:
                 if iteration % 100 == 99:
                     #5.
                     #saver.save(session, './my-model', global_step=iteration)
-                    #saver.save(sess, self.checkpoint_dir+'/wgan_whc', global_step=iteration)
+                    #saver.save(sess, self.checkpoint_dir+'/wgan', global_step=iteration)
                     self.save(self.checkpoint_dir, iteration)
                     samples = []
                     for i in range(10):
                         samples.extend(self.generate_samples(self.fake_inputs))
 
                     for i in range(4):
-                        lm = NgramLanguageModel(i+1, samples, tokenize=False)#language_helpers.
+                        lm = NgramLanguageModel(i+1, samples, tokenize=False)
                         lib.plot.plot('js{}'.format(i+1), lm.js_with(self.true_char_ngram_lms[i]))
 
                     with open(self.sample_dir+'/samples_{}.txt'.format(iteration), 'w') as f:
@@ -361,154 +361,4 @@ class WGAN_GP:
                 f.write(s + "\n")
         return
 
-    ###高表达在表征空间的分布
-
-    def Encoder_z(self,seq,datatype='str'):
-        if datatype == 'str':
-            seq = seq2oh(seq,self.charmap)
-        #num = seq.shape[0]
-        #batches = math.ceil(num/self.BATCH_SIZE)
-        #z = []
-        #for b in range(batches-1):
-        z=self.sess.run(self.gen_z,feed_dict={self.real_input:seq})#
-            #z.append(self.sess.run(self.layers['rep'],feed_dict={self.real_input:seq[b*self.BATCH_SIZE:(b+1)*self.BATCH_SIZE,:,:]}))
-        #z = np.concatenate(z)
-        return z
-
-
-    def Generate_rep(self,label,generated_z,gen_batch_size):## 因为BS_EC只有42条,因此,把batch size 设小一点,不然隐空间不显示这些点
-        self.generated_z =tf.placeholder(tf.float32, shape=[None, self.Z_DIM],name='generated_z')
-        with tf.variable_scope('AE', reuse=tf.AUTO_REUSE):
-            # label = []
-            # for k in range(self.BATCH_SIZE):
-            #     label.extend([5])
-            # label = tf.convert_to_tensor(label) #(gen_bathsize(100),) [n_class] #label是0-9，生成序列只需要都是最后一个bin的即可
-            label = tf.convert_to_tensor(label)
-            label_EC,label_PA=tf.split(label,num_or_size_splits=2, axis=1)
-            #one_hot_label_BS = tf.reshape(tf.one_hot(label_BS, self.nbin),(gen_batch_size,self.nbin))  #self.BATCH_SIZE
-            one_hot_label_EC = tf.reshape(tf.one_hot(label_EC, self.nbin),(gen_batch_size,self.nbin)) #
-            one_hot_label_PA = tf.reshape(tf.one_hot(label_PA, self.nbin),(gen_batch_size,self.nbin))  #
-            #Wc_BS = tf.get_variable("Wc_BS_name")
-            Wc_EC = tf.get_variable("Wc_EC_name")
-            Wc_PA = tf.get_variable("Wc_PA_name")
-            #clusterhead_BS = self.cluster_layer(one_hot_label_BS,Wc_BS)
-            clusterhead_EC = self.cluster_layer(one_hot_label_EC,Wc_EC)
-            clusterhead_PA = self.cluster_layer(one_hot_label_PA,Wc_PA)
-            clusterhead = tf.concat((clusterhead_EC,clusterhead_PA),axis=-1)
-            self.rep_out = tf.add(clusterhead,self.generated_z)
-        rep_out=self.sess.run(self.rep_out,feed_dict={self.generated_z:generated_z})#
-        return rep_out
-        
-    def get_z(self,rep_dir,name_list_7,gen_bs,exp_flag=True,name_list_3=None):#gen_num=3000,
-        rep_data_7=[]
-        speflag_7=[]
-        promoter_seq_7=[]
-        #同一个物种的序列
-        for k in range(len(name_list_7)):
-            fname=name_list_7[k]
-            print(fname)
-            with open(fname+'.pickle','rb') as f: #self.log_dir+'/'+
-                    promoter=pickle.load(f)
-            with open(fname+'_label.pickle','rb') as f: #self.log_dir+'/'+
-                    label_in=pickle.load(f)
-            print(len(promoter))
-            print(label_in[0])
-            if len(promoter)>=256: 
-                gen_bs=256
-            elif len(promoter)>=32: 
-                gen_bs=32
-            else:
-                gen_bs=7
-            promoter_seq = copy.deepcopy(promoter)    
-            promoter = seq2oh(promoter,self.charmap)
-            for j in range(int(len(promoter)/gen_bs)):
-                input_oh= promoter[j*gen_bs:(j+1)*gen_bs,:,:]
-                input_label= label_in[j*gen_bs:(j+1)*gen_bs]
-                #each_data_z= self.sess.run(self.gen_z,feed_dict={self.real_input:input_oh})
-                each_data_z = self.Encoder_z(input_oh,datatype='oh')
-                each_data = self.Generate_rep(input_label,each_data_z,gen_bs)#self.sess.run(self.rep,feed_dict={self.z:each_data_z})
-                print(np.array(each_data).shape)
-                rep_data_7.append(each_data)
-                speflag_7.append([fname]*each_data.shape[0]) 
-                promoter_seq_7.append(promoter_seq[j*gen_bs:(j+1)*gen_bs])
-        rep_data_7=np.concatenate(rep_data_7) #np.array(rep_data)#
-        speflag_7=np.concatenate(speflag_7)
-        promoter_seq_7=np.concatenate(promoter_seq_7)
-
-        print('latent data_7 shape:')
-        print(rep_data_7.shape)
-        #save
-        rep_data_file_7='rep_data_EC_PA_7_natureALLpickle'
-        speflag_file_7='speflag_EC_PA_7_natureALL.pickle'
-        promoter_seq_file_7='promoter_seq_EC_PA_7_natureALL.pickle'
-        with open(rep_dir+rep_data_file_7, 'wb') as f:
-                pickle.dump(rep_data_7, f) 
-        with open(rep_dir+speflag_file_7, 'wb') as f:
-                pickle.dump(speflag_7, f) 
-        with open(rep_dir+promoter_seq_file_7, 'wb') as f:
-                pickle.dump(promoter_seq_7, f) 
-        print('saved!')
-        #
-        #
-        #label_3
-        if exp_flag:
-            rep_data_3=[]
-            speflag_3=[]
-            exp_value_3=[]
-            for k in range(len(name_list_3)):
-                fname=name_list_3[k]
-                print(fname)
-                with open(fname+'.pickle','rb') as f: #self.log_dir+'/'+
-                        promoter=pickle.load(f)
-                with open(fname+'_label.pickle','rb') as f: #self.log_dir+'/'+
-                        label_in=pickle.load(f)
-                with open(fname+'_exp.pickle','rb') as f: #self.log_dir+'/'+
-                        exp_in=pickle.load(f)
-                print(len(promoter))
-                print(label_in[0])
-                print(exp_in[0])
-                if len(promoter)>=256: 
-                    gen_bs=256
-                elif len(promoter)>=32: 
-                    gen_bs=32
-                else:
-                    gen_bs=7
-                promoter = seq2oh(promoter,self.charmap)
-                for j in range(int(len(promoter)/gen_bs)):
-                    input_oh= promoter[j*gen_bs:(j+1)*gen_bs,:,:]
-                    input_label= label_in[j*gen_bs:(j+1)*gen_bs]
-                    #each_data_z= self.sess.run(self.gen_z,feed_dict={self.real_input:input_oh})
-                    each_data_z = self.Encoder_z(input_oh,datatype='oh')
-                    each_data = self.Generate_rep(input_label,each_data_z,gen_bs)#self.sess.run(self.rep,feed_dict={self.z:each_data_z})
-                    rep_data_3.append(each_data)
-                    speflag_3.append([fname]*each_data.shape[0]) 
-                    exp_value_3.append(exp_in[j*gen_bs:(j+1)*gen_bs])
-            #最后不够一个batch的：
-            input_oh= promoter[(j+1)*gen_bs:,:,:]
-            input_label= label_in[(j+1)*gen_bs:]
-            #each_data_z= self.sess.run(self.gen_z,feed_dict={self.real_input:input_oh})
-            each_data_z = self.Encoder_z(input_oh,datatype='oh')
-            each_data = self.Generate_rep(input_label,each_data_z,gen_bs)#self.sess.run(self.rep,feed_dict={self.z:each_data_z})
-            rep_data_3.append(each_data)
-            speflag_3.append([fname]*each_data.shape[0]) 
-            exp_value_3.append(exp_in[(j+1)*gen_bs:])
-            #
-            rep_data_3=np.concatenate(rep_data_3) #np.array(rep_data)#
-            speflag_3=np.concatenate(speflag_3)
-            exp_value_3=np.concatenate(exp_value_3)
-            print('latent data_3 shape:')
-            print(rep_data_3.shape)
-            #save
-            rep_data_file_3='rep_data_EC_PA_3.pickle'
-            speflag_file_3='speflag_EC_PA_3.pickle'
-            exp_value_file_3='expvalue_EC_PA_3.pickle'
-            with open(rep_dir+rep_data_file_3, 'wb') as f:
-                    pickle.dump(rep_data_3, f) 
-            with open(rep_dir+speflag_file_3, 'wb') as f:
-                    pickle.dump(speflag_3, f) 
-            with open(rep_dir+exp_value_file_3, 'wb') as f:
-                    pickle.dump(exp_value_3, f) 
-            print('saved!')#
-            return rep_data_3,rep_data_7,speflag_3,speflag_7,exp_value_3
-        else:
-            return rep_data_7,speflag_7,promoter_seq
+    

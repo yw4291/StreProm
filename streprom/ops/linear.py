@@ -30,9 +30,6 @@ def Linear(
         weightnorm=None,
         gain=1.
         ):
-    """
-    initialization: None, `lecun`, 'glorot', `he`, 'glorot_he', `orthogonal`, `("uniform", range)`
-    """
     with tf.name_scope(name) as scope:
 
         def uniform(stdev, size):

@@ -13,11 +13,6 @@ def disable_default_weightnorm():
 
 
 def Conv1D(name, input_dim, output_dim, filter_size, inputs, he_init=True, mask_type=None, stride=1, weightnorm=None, biases=True, gain=1.):
-    """
-    inputs: tensor of shape (batch size, num channels, width)
-    mask_type: one of None, 'a', 'b'
-    returns: tensor of shape (batch size, num channels, width)
-    """
     with tf.name_scope(name) as scope:
 
         if mask_type is not None:

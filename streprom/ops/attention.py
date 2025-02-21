@@ -1,4 +1,4 @@
-#1.超参(维度)确定:num_units,maxlen
+import tensorflow as tf
 
 def scaled_dot_product_attention(Q, K, V, #key_masks,
                                  causality=False, 
@@ -67,7 +67,7 @@ def multihead_attention(queries, keys, values, #key_masks,
     return outputs #(N, T_q, C)  
 
 
-def ff(inputs, num_units=[], scope="positionwise_feedforward"):#输入:[N, T, C]
+def ff(inputs, num_units=[], scope="positionwise_feedforward"):
     with tf.variable_scope(scope, reuse=tf.AUTO_REUSE):
         # Inner layer
         outputs = tf.layers.dense(inputs, num_units[0], activation=tf.nn.relu)
@@ -80,7 +80,7 @@ def ff(inputs, num_units=[], scope="positionwise_feedforward"):#输入:[N, T, C]
     return outputs #[N, T, C]
 
 
-def ln(inputs, epsilon = 1e-8, scope="ln"): #输入(bs,x,..),输出维度不变
+def ln(inputs, epsilon = 1e-8, scope="ln"): 
     with tf.variable_scope(scope, reuse=tf.AUTO_REUSE):
         inputs_shape = inputs.get_shape()
         params_shape = inputs_shape[-1:]
@@ -93,7 +93,7 @@ def ln(inputs, epsilon = 1e-8, scope="ln"): #输入(bs,x,..),输出维度不变
 def positional_encoding(inputs,
                         maxlen, #>=T
                         masking=True,
-                        scope="positional_encoding"): #输入:(N, T, E)，输出维度不变
+                        scope="positional_encoding"): 
     E = inputs.get_shape().as_list()[-1] # static
     N, T = tf.shape(inputs)[0], tf.shape(inputs)[1] # dynamic
     with tf.variable_scope(scope, reuse=tf.AUTO_REUSE):

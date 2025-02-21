@@ -31,7 +31,7 @@ class GeneticAthm():
             
         self.Predictor = Predictor
         try:
-            self.Score = np.mean(self.Predictor(self.Seqs))#----------cross_signal
+            self.Score = np.mean(self.Predictor(self.Seqs))
             if type(self.Score) is not np.ndarray:
                 print("PredictorError: Output of Predictor(Generator(x)) must be a numpy.ndarray")
                 raise
@@ -86,21 +86,19 @@ class GeneticAthm():
             Poolsize = self.Score.shape[0]
             Nnew = math.ceil(Poolsize*self.P_new)
             Nelite = math.ceil(Poolsize*self.P_elite)
-            IParent = self.select_parent( Nnew, Nelite, Poolsize) #从精英和普通中各挑一半作为母代
+            IParent = self.select_parent( Nnew, Nelite, Poolsize) 
             Parent = self.x[IParent,:].copy()
-            #生成新序列
-            x_new = self.act(Parent)#生成子代隐空间
+            x_new = self.act(Parent)
             oh_new = seq2oh(self.Generator(x_new),self.charmap)
-            Score_new = np.mean(self.Predictor(self.Generator(x_new)))#---------2.
+            Score_new = np.mean(self.Predictor(self.Generator(x_new)))
             self.x = np.concatenate([self.x, x_new])
             self.oh = np.concatenate([self.oh, oh_new])
             self.Score = np.append(self.Score,Score_new)
             I = np.argsort(self.Score)
-            I = I[::-1]#将序列池按分数降序排列
+            I = I[::-1]
             self.x = self.x[I,:]
             self.oh = self.oh[I,:,:]
             self.Score = self.Score[I]
-            #去掉表现差的序列
             I = self.delRep(self.oh ,P_rep)
             self.x = np.delete(self.x,I,axis=0)
             self.oh  = np.delete(self.oh ,I,axis=0)
@@ -149,12 +147,12 @@ class GeneticAthm():
         pdf.close()
         return
     
-    def PMutate(self, z): #单点突变
+    def PMutate(self, z): 
         p = np.random.randint(0,z.shape[0])
         z[p] = np.random.normal()
         return
     
-    def Reorganize(self, z, Parent): #随机重组
+    def Reorganize(self, z, Parent): 
         index = np.random.randint(0, 1,size=(z.shape[0]))
         j = np.random.randint(0, Parent.shape[0])
         for i in range(z.shape[0]):
