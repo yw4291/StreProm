@@ -1,5 +1,5 @@
 # StreProm
-*Wang Ye edited on April 02, 2025*
+*Wang Ye edited on May 07, 2025*
 
 This repository contains the code for the paper:
 **A scalable deep learning strategy for promoter inverse design in Streptomyces**.
