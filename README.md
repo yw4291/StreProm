@@ -2,7 +2,7 @@
 *Wang Ye edited on May 07, 2025*
 
 This repository contains the code for the paper:
-**A scalable deep learning strategy for promoter inverse design in Streptomyces**.
+**Deep learning-enabled de novo design of synthetic promoters for enhanced natural product biosynthesis in Streptomyces**.
 
 
 # Introduction
@@ -101,3 +101,4 @@ For academic use, this project is licensed under the MIT License (see the LICENS
 
 # Support
 If you have any questions, don't hesitate to open an issue. Every contribution is highly apprecieated!
+
