@@ -50,7 +50,7 @@ StreProm is composed of a number of modules that can be imported as follows:
 **Round 1 :**
 
 - `Generation`.The initial pool consists of 2332 candidate sequences. 
-- `Predictive`.Trained on dRNA-seq data[2] and RNA-seq data(GEO)[3]. **The activities here were calculated using the average activities of four different time points, as follows: early-exponential (E), transition (T), late-exponential (L), and stationary(S)[2]**.This model was trained with 3144 samples as the training set, 427 samples as the validation set and others as the testing set.
+- `Predictive`.Trained on dRNA-seq data[2] and RNA-seq data(GEO)[3]. **The activities here were calculated using the average activities of four different time points, as follows: early-exponential (E), transition (T), late-exponential (L), and stationary(S)[2]**.This model was trained with 3144 samples as the training set, 174 samples as the validation set and others as the testing set.
 
 **Round 2 / Final :**
 
@@ -101,6 +101,7 @@ For academic use, this project is licensed under the MIT License (see the LICENS
 
 # Support
 If you have any questions, don't hesitate to open an issue. Every contribution is highly apprecieated!
+
 
 
 
