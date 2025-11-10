@@ -1,5 +1,5 @@
 # StreProm
-*Wang Ye edited on Oct 22, 2025*
+*Wang Ye edited on Nov 09, 2025*
 
 This repository contains the code for the paper:
 **Deep learning-enabled de novo design of synthetic promoters for enhanced natural product biosynthesis in Streptomyces**.
@@ -101,6 +101,7 @@ For academic use, this project is licensed under the MIT License (see the LICENS
 
 # Support
 If you have any questions, don't hesitate to open an issue. Every contribution is highly apprecieated!
+
 
 
 
